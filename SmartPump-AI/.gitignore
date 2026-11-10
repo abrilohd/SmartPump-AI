@@ -1,0 +1,52 @@
+# ============================================================
+# SmartPump AI — .gitignore
+# ============================================================
+
+# --- Dataset files (download separately, never commit) ------
+data/raw/
+data/processed/
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+.eggs/
+
+# --- Virtual environments ---
+venv/
+env/
+ENV/
+.venv/
+
+# --- Jupyter Notebooks ---
+# Commit notebooks with cleared outputs only
+.ipynb_checkpoints/
+
+# --- Trained models (can be large; regenerate from code) ---
+models/*.pkl
+models/*.joblib
+models/*.model
+
+# --- Results (regenerate from code; keep plots in results/ if small) ---
+results/*.csv
+results/*.json
+
+# --- IDE and OS ---
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# --- Logs ---
+*.log
+logs/
+
