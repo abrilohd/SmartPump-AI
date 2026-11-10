@@ -1,15 +1,15 @@
-# SmartPump AI — Technical Project Proposal
+# SmartPump AI  - Technical Project Proposal
 
 **Project Title:** Intelligent Hydraulic Pump Condition Monitoring and Fault Classification Using Machine Learning  
-**Version:** 1.0  
+**Version:** 1.1  
 **Date:** November 2026  
-**Status:** Foundation Phase — Awaiting Dataset Download
+**Status:** Step 2 Complete — EDA Verified, Ready for Feature Engineering
 
 ---
 
 ## 1. Executive Summary
 
-SmartPump AI applies supervised machine learning to automatically classify the internal pump leakage condition of an industrial hydraulic system into three severity classes — **Normal**, **Warning**, and **Fault** — using real sensor time-series data from the UCI Condition Monitoring of Hydraulic Systems dataset.
+SmartPump AI applies supervised machine learning to automatically classify the internal pump leakage condition of an industrial hydraulic system into three severity classes  - **Normal**, **Warning**, and **Fault**  - using real sensor time-series data from the UCI Condition Monitoring of Hydraulic Systems dataset.
 
 The dataset was collected by Helwig, Pignanelli, and Schütze at ZeMA gGmbH, Saarbrücken, Germany, and published on the UCI Machine Learning Repository under a CC BY 4.0 license. It contains 2,205 experimental 60-second cycles with measurements from 17 sensor channels at sampling rates between 1 Hz and 100 Hz.
 
@@ -68,7 +68,7 @@ The dataset contains **17 raw sensor text files** plus **one target file** (`pro
 | CP | Cooling power (virtual) | kW | 1 Hz | 60 |
 | SE | Efficiency factor (virtual) | % | 1 Hz | 60 |
 
-### 3.4 Target Labels — `profile.txt`
+### 3.4 Target Labels  - `profile.txt`
 
 `profile.txt` has 2,205 rows and 5 columns. **Column indices are 0-based in code.**
 
@@ -88,7 +88,7 @@ The dataset contains **17 raw sensor text files** plus **one target file** (`pro
 | `1` | Weak internal leakage (reduced efficiency) | **Warning** |
 | `2` | Severe internal leakage | **Fault** |
 
-> **Note:** The other four columns describe the cooler, valve, accumulator, and system stability — not pump leakage. They must not be conflated with our classification target.
+> **Note:** The other four columns describe the cooler, valve, accumulator, and system stability  - not pump leakage. They must not be conflated with our classification target.
 
 ---
 
@@ -105,7 +105,7 @@ The raw data is **not** directly usable as a feature matrix because:
 - Each cycle produces tens of thousands of data points, not a fixed-width feature vector.
 - Treating raw samples as independent observations would cause severe data leakage.
 
-**Solution:** Per-cycle statistical feature extraction — reduce each 60-second sensor time series to a small set of summary statistics:
+**Solution:** Per-cycle statistical feature extraction  - reduce each 60-second sensor time series to a small set of summary statistics:
 - Mean, standard deviation, minimum, maximum, median
 - Optionally: RMS, kurtosis, skewness, interquartile range
 
@@ -171,12 +171,12 @@ For hyperparameter search, use `StratifiedKFold(n_splits=5)` applied to the trai
 
 | Risk | Severity | Mitigation |
 |------|----------|-----------|
-| **Data leakage** — mixing same-cycle samples in train/test | 🔴 High | Feature extraction aggregates whole cycles; split at cycle level |
-| **Label confusion** — using wrong `profile.txt` column | 🔴 High | Explicitly load column 2 (0-indexed); verify unique values are {0, 1, 2} |
-| **Class imbalance** — Warning class underrepresented | 🟡 Medium | Report macro F1; use `class_weight='balanced'` for SVM/RF; evaluate per-class |
-| **Stable flag** — transient cycles may distort features | 🟡 Medium | Filter `stable_flag==1` for primary run; include in sensitivity analysis |
-| **Multi-rate features** — naïve concatenation of different-rate sensors | 🟡 Medium | Extract statistics per sensor independently; align at cycle level |
-| **Overfitting** — deep Decision Trees or complex SVMs | 🟢 Low | Cross-validate; tune `max_depth` and regularization |
+| **Data leakage**  - mixing same-cycle samples in train/test | 🔴 High | Feature extraction aggregates whole cycles; split at cycle level |
+| **Label confusion**  - using wrong `profile.txt` column | 🔴 High | Explicitly load column 2 (0-indexed); verify unique values are {0, 1, 2} |
+| **Class imbalance**  - Warning class underrepresented | 🟡 Medium | Report macro F1; use `class_weight='balanced'` for SVM/RF; evaluate per-class |
+| **Stable flag**  - transient cycles may distort features | 🟡 Medium | Filter `stable_flag==1` for primary run; include in sensitivity analysis |
+| **Multi-rate features**  - naïve concatenation of different-rate sensors | 🟡 Medium | Extract statistics per sensor independently; align at cycle level |
+| **Overfitting**  - deep Decision Trees or complex SVMs | 🟢 Low | Cross-validate; tune `max_depth` and regularization |
 
 ---
 
@@ -184,12 +184,12 @@ For hyperparameter search, use `StratifiedKFold(n_splits=5)` applied to the trai
 
 | Phase | Deliverable | Assigned To |
 |-------|-------------|-------------|
-| Phase 1 | Project foundation — README, proposal, data docs | Member C |
+| Phase 1 | Project foundation  - README, proposal, data docs | Member C |
 | Phase 2 | Dataset download, EDA notebook, label verification | Member A |
-| Phase 3 | Feature extraction pipeline — `feature_engineering.py` | Member A |
-| Phase 4 | Preprocessing pipeline — `preprocessing.py` | Member A |
-| Phase 5 | Model training — `train.py`, `03_model_training.ipynb` | Member B |
-| Phase 6 | Evaluation report — confusion matrices, feature importance | Member B |
+| Phase 3 | Feature extraction pipeline  - `feature_engineering.py` | Member A |
+| Phase 4 | Preprocessing pipeline  - `preprocessing.py` | Member A |
+| Phase 5 | Model training  - `train.py`, `03_model_training.ipynb` | Member B |
+| Phase 6 | Evaluation report  - confusion matrices, feature importance | Member B |
 | Phase 7 | Final integration, reproducibility audit, documentation | Member C |
 
 ---

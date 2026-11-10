@@ -1,0 +1,24 @@
+{
+  "model_name": "RandomForest",
+  "algorithm": "RandomForestClassifier",
+  "target_mapping": {
+    "0": "Normal",
+    "1": "Warning",
+    "2": "Fault"
+  },
+  "random_state": 42,
+  "training_cycles": 1231,
+  "test_cycles": 218,
+  "num_features_input": 255,
+  "validation_macro_f1": 1.0,
+  "validation_fault_recall": 1.0,
+  "test_accuracy": 1.0,
+  "test_macro_f1": 1.0,
+  "test_fault_recall": 1.0,
+  "test_fault_precision": 1.0,
+  "test_fault_f1": 1.0,
+  "unstable_macro_f1": 1.0,
+  "unstable_fault_recall": 1.0,
+  "sklearn_version": "1.9.1",
+  "training_timestamp": "2026-11-10 16:18:05 UTC"
+}

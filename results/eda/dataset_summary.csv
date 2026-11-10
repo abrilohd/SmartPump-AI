@@ -1,0 +1,24 @@
+property,value
+dataset_name,Condition Monitoring of Hydraulic Systems
+source,UCI Machine Learning Repository (ID 447)
+doi,10.24432/C5CW21
+license,CC BY 4.0
+n_cycles_total,2205
+n_cycles_stable,1449
+n_cycles_unstable,756
+pct_stable,65.7
+n_sensor_files,17
+target_file,profile.txt
+target_column,pump_leakage (0-indexed col 2)
+n_classes,3
+class_Normal_code,0
+class_Normal_count,1221
+class_Warning_code,1
+class_Warning_count,492
+class_Fault_code,2
+class_Fault_count,492
+cycle_duration_s,60
+max_rate_hz,100
+min_rate_hz,1
+missing_values,0
+profile_verified,True
