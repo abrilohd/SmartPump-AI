@@ -2,18 +2,19 @@
 
 **Intelligent Hydraulic Pump Condition Monitoring and Internal Leakage Classification Using Machine Learning**
 
-*Classwork 3.12: Group Machine Learning Project*
+*Classwork 3.12 — Group Machine Learning Project*
+
 ## Team Members
 
-| Full Name | Student ID | GitHub Username |
-|---|---|---|
-| Abrham Gebremedhin | WOUR/0082/16 | [@abrilohd](https://github.com/abrilohd) |
-| Israel Abera | WOUR/4167/16 | [@Isru96](https://github.com/Isru96) |
-| Biruk Ayitenew | WOUR/0483/16 | [@Biruk1997](https://github.com/Biruk1997) |
+| Full Name | Student ID | GitHub Username | Assigned Role |
+|---|---|---|---|
+| **Biruk Ayitenew** | WOUR/0483/16 | [@Biruk1997](https://github.com/Biruk1997) | **Member 1:** Data Engineering & Exploration |
+| **Israel Abera** | WOUR/4167/16 | [@Isru96](https://github.com/Isru96) | **Member 2:** Machine Learning & Evaluation |
+| **Abrham Gebremedhin** | WOUR/0082/16 | [@abrilohd](https://github.com/abrilohd) | **Member 3:** Integration, Documentation & Testing Lead |
 
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org/)
 [![License: CC BY 4.0](https://img.shields.io/badge/Dataset%20License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
-[![Tests](https://img.shields.io/badge/Tests-Passing-brightgreen.svg)]()
+[![Tests](https://img.shields.io/badge/Tests-22%20Passing-brightgreen.svg)]()
 [![Status](https://img.shields.io/badge/Status-Complete-success.svg)]()
 
 ---
@@ -38,7 +39,7 @@
 
 ## 1. Project Overview
 
-**SmartPump AI** is a collaborative machine learning project for **Classwork 3.12** that analyzes high-frequency multivariate sensor streams from an industrial hydraulic system to automatically classify the **internal pump leakage condition** into three distinct operational states: **Normal**, **Warning**, and **Fault**.
+**SmartPump AI** is a collaborative machine learning project for **Classwork 3.12** that analyzes high-frequency multivariate sensor streams from an industrial hydraulic system to automatically classify the **internal pump leakage condition** into three operational states: **Normal**, **Warning**, and **Fault**.
 
 The project is built on the benchmark **UCI Condition Monitoring of Hydraulic Systems** dataset, collected from a physical industrial hydraulic test rig at ZeMA gGmbH (Saarbrücken, Germany). The system demonstrates a rigorous end-to-end machine learning engineering workflow: from multi-rate time-series ingestion and leak-free feature extraction to multi-algorithm comparison, hyperparameter optimization, and generalization auditing.
 
@@ -59,11 +60,11 @@ Traditional industrial maintenance strategies rely on reactive repair (after fai
 
 | # | Objective | Deliverable |
 |---|---|---|
-| **1** | **Target Extraction & Label Mapping** | Extract pump leakage states from `profile.txt` and map to Normal (0), Warning (1), and Fault (2). |
+| **1** | **Target Extraction & Label Mapping** | Extract pump leakage states from `profile.txt` (Column 2) and map to Normal (0), Warning (1), and Fault (2). |
 | **2** | **Exploratory Data Analysis (EDA)** | Analyze multi-rate sensor distributions, stable/unstable operational flags, and inter-sensor correlations. |
 | **3** | **Cycle-Level Feature Engineering** | Extract 15 statistical, distribution, and temporal features per sensor (255 total per cycle) with zero-variance safety. |
-| **4** | **Leakage-Free Cross-Validation** | Implement cycle-level stratified and group-aware cross-validation across experimental blocks. |
-| **5** | **Multi-Algorithm Comparison** | Implement, tune, and compare the 5 required algorithms (Decision Tree, Random Forest, SVM, Naïve Bayes, AdaBoost) plus a baseline. |
+| **4** | **Leakage-Free Cross-Validation** | Implement cycle-level stratified and group-aware cross-validation across 36 experimental blocks. |
+| **5** | **Multi-Algorithm Comparison** | Implement, tune, and compare the 5 required algorithms (Decision Tree, Random Forest, SVM, Naïve Bayes, AdaBoost) plus a Dummy baseline. |
 | **6** | **Fault Recall Optimization** | Prioritize the detection of severe internal leakage (`Fault` recall) to prevent unmonitored equipment failure. |
 | **7** | **Team Collaboration** | Maintain a clean, reproducible repository with clear Git workflows for a three-student team. |
 
@@ -93,7 +94,7 @@ Traditional industrial maintenance strategies rely on reactive repair (after fai
 | **Vibration** | `VS1` | 1 Hz | 60 | Mechanical vibration (mm/s) |
 | **Virtual Sensors** | `CE`, `CP`, `SE` | 1 Hz | 60 | Cooling efficiency (%), Cooling power (kW), Efficiency factor (%) |
 
-The ground-truth conditions are annotated in `profile.txt` (column 3: internal pump leakage; column 5: system stability flag).
+The ground-truth conditions are annotated in `profile.txt` (Column 0: cooler, Column 1: valve, **Column 2: pump leakage**, Column 3: accumulator, Column 4: stability flag).
 
 ---
 
@@ -181,35 +182,41 @@ To prioritize industrial safety, the evaluation framework emphasizes early and a
 ```text
 SmartPump-AI/
 │
+├── .github/
+│   └── PULL_REQUEST_TEMPLATE.md   ← Standardized PR checklist for peer review
+│
 ├── data/
-│   ├── raw/                    ← Original sensor matrices (*.txt, excluded from git)
-│   ├── processed/              ← Engineered cycle features (stable & full datasets)
-│   └── README.md               ← Dataset acquisition and schema documentation
+│   ├── raw/                       ← Original sensor matrices (*.txt, excluded from git)
+│   ├── processed/                 ← Engineered cycle features (stable & full datasets)
+│   └── README.md                  ← Dataset acquisition and schema documentation
 │
 ├── docs/
-│   ├── project_proposal.md     ← Detailed technical proposal and objectives
+│   ├── project_proposal.md        ← Technical proposal, problem definition & scope
 │   ├── data_exploration_report.md ← Comprehensive EDA report with sensor statistics
-│   ├── preprocessing_report.md ← Preprocessing and feature engineering specifications
-│   ├── model_training_report.md← Detailed evaluation report across all 5 algorithms
-│   ├── technical_risks.md      ← Risk assessment register and mitigation strategies
-│   └── team_workflow.md        ← Team organization, branch rules, and PR guidelines
+│   ├── preprocessing_report.md    ← Preprocessing and feature engineering specifications
+│   ├── model_training_report.md   ← Detailed evaluation report across all 5 algorithms
+│   ├── technical_risks.md         ← Risk assessment register and mitigation strategies
+│   ├── team_workflow.md           ← Team organization, branch rules, and PR guidelines
+│   └── dataset_reference.md       ← Full UCI technical reference, sensor channels & citations
 │
 ├── notebooks/
-│   ├── 01_data_exploration.ipynb ← EDA, distributions, correlation, stability analysis
-│   ├── 02_preprocessing.ipynb    ← Feature extraction, scaling, and dataset creation
-│   └── 03_model_training.ipynb   ← Pipeline building, cross-validation, and evaluation
+│   ├── 01_data_exploration.ipynb  ← EDA, distributions, correlation, stability analysis
+│   ├── 02_preprocessing.ipynb     ← Feature extraction, scaling, and dataset creation
+│   └── 03_model_training.ipynb    ← Pipeline building, cross-validation, and evaluation
 │
 ├── src/
 │   ├── __init__.py
-│   ├── preprocessing.py        ← Loading, validation, filtering, and splitters
-│   ├── feature_engineering.py  ← 255 statistical feature extraction engine
-│   └── train.py                ← Pipeline definitions, CV, grid search, and metrics
+│   ├── preprocessing.py           ← Loading, validation, filtering, and splitters
+│   ├── feature_engineering.py     ← 255 statistical feature extraction engine
+│   ├── train.py                   ← Pipeline definitions, CV, grid search, and metrics
+│   └── uci_loader.py              ← Programmatic UCI repository fetcher & file verifier
 │
 ├── tests/
 │   ├── __init__.py
-│   ├── test_feature_engineering.py ← Tests for statistical calculations and safety
 │   ├── test_preprocessing.py       ← Tests for loading, disjoint splits, and scaling
-│   └── test_train.py               ← Tests for pipeline fit/predict and metrics
+│   ├── test_feature_engineering.py ← Tests for statistical calculations and safety
+│   ├── test_train.py               ← Tests for pipeline fit/predict and metrics
+│   └── test_uci_loader.py          ← Tests for UCI repository loading and mocks
 │
 ├── models/
 │   ├── .gitkeep
@@ -217,17 +224,15 @@ SmartPump-AI/
 │   └── model_metadata.json         ← Model parameters, feature ordering, and scores
 │
 ├── results/
-│   ├── eda/                    ← EDA statistical tables and correlation matrices
-│   ├── evaluation/             ← Model comparison CSVs, CV scores, and feature importances
-│   └── visualizations/         ← Confusion matrices, ROC curves, and importance charts
+│   ├── eda/                       ← EDA statistical tables and correlation matrices
+│   │   └── visualizations/        ← 11 exploratory data distribution plots (.png)
+│   ├── evaluation/                ← Model comparison CSVs, CV scores, and feature importances
+│   └── visualizations/            ← Confusion matrices, ROC curves, and importance charts
 │
-├── .github/
-│   └── PULL_REQUEST_TEMPLATE.md← Standardized PR checklist for peer review
-│
-├── .gitignore                  ← Git exclusion rules (raw data, joblib models, caches)
-├── CONTRIBUTING.md             ← Step-by-step Git workflow instructions for students
-├── README.md                   ← Master project documentation
-└── requirements.txt            ← Pinned Python dependencies
+├── .gitignore                     ← Git exclusion rules (raw data, joblib models, caches)
+├── CONTRIBUTING.md                ← Step-by-step Git workflow instructions for students
+├── README.md                      ← Master project documentation
+└── requirements.txt               ← Pinned Python dependencies
 ```
 
 ---
@@ -246,22 +251,28 @@ cd SmartPump-AI
 
 ### 2. Create and Activate Virtual Environment
 ```bash
+# Create virtual environment
+python -m venv .venv
+
 # Windows
-python -m venv venv
-venv\Scripts\activate
+.venv\Scripts\activate
 
 # macOS / Linux
-python3 -m venv venv
-source venv/bin/activate
+source .venv/bin/activate
 ```
 
-### 3. Install Dependencies
+### 3. Upgrade Pip & Install Dependencies
 ```bash
+python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-### 4. Download Raw Dataset
+### 4. Verify Raw Dataset Availability
 Follow instructions in [`data/README.md`](data/README.md) to place raw sensor text files into `data/raw/`.
+Verify dataset presence with the built-in diagnostic tool:
+```bash
+python -m src.uci_loader
+```
 
 ### 5. Run the End-to-End Pipeline
 The project can be executed sequentially via Jupyter Notebooks:
@@ -273,7 +284,7 @@ The project can be executed sequentially via Jupyter Notebooks:
 ```bash
 python -m pytest tests/ -v
 ```
-*(All 16 core unit and integration tests passing: 5 feature engineering, 6 preprocessing, 5 model training).*
+*(All 22 automated unit and integration tests passing: 6 preprocessing, 5 feature engineering, 5 model training, 6 UCI loader/verification).*
 
 ---
 
@@ -300,7 +311,9 @@ Permutation importance and Gini impurity analysis revealed that internal leakage
 4. **`PS3` (Return Line Pressure):** Elevated return line backpressure from leakage oil returning directly to the tank.
 
 ### Group-Aware Validation Across 36 Experimental Blocks
-When complete contiguous test blocks are held out using `StratifiedGroupKFold(n_splits=5)`, the Random Forest achieves a Macro F1 of **0.9168 ± 0.0769**, confirming strong generalization while highlighting realistic ambient and thermal drift across separate days of operation.
+- **Stratified 5-Fold CV (In-Distribution):** Macro F1 = **1.0000**.
+- **Group-Aware CV (Held-Out Blocks):** When complete contiguous test blocks are held out using `StratifiedGroupKFold(n_splits=5)`, the Random Forest achieves a Macro F1 of **0.9168 ± 0.0769**.
+- **Scientific Interpretation:** While the Random Forest separates classes cleanly in controlled laboratory cycles, holding out complete experimental runs introduces realistic ambient temperature drift and oil viscosity shifts. The 100% held-out test score reflects in-distribution precision, whereas 0.9168 represents realistic cross-run generalization.
 
 ---
 
@@ -310,9 +323,9 @@ SmartPump AI is developed by a team of three students. Responsibilities are part
 
 | Member | Domain | Key Files & Responsibilities |
 |---|---|---|
-| **Member 1** | Data Engineering & Exploration | Ingestion of 17 raw sensor channels, multi-rate alignment, stable filtering, cycle-level feature extraction (255 features), `01_data_exploration.ipynb`, `02_preprocessing.ipynb`, `src/preprocessing.py`, `src/feature_engineering.py`. |
-| **Member 2** | Machine Learning & Evaluation | Implementation of 5 ML algorithms, 5-fold stratified and grouped cross-validation, hyperparameter tuning, metrics evaluation, `03_model_training.ipynb`, `src/train.py`, `results/`. |
-| **Member 3** | Integration, QA & Documentation | Project architecture, automated test suite (`tests/`), risk register, technical proposal, root `README.md`, `CONTRIBUTING.md`, `.github/`, peer review coordination. |
+| **Biruk Ayitenew**<br>*(Member 1)* | Data Engineering & Exploration | Ingestion of 17 raw sensor channels, multi-rate alignment, stable filtering, cycle-level feature extraction (255 features), `01_data_exploration.ipynb`, `02_preprocessing.ipynb`, `src/preprocessing.py`, `src/feature_engineering.py`. |
+| **Israel Abera**<br>*(Member 2)* | Machine Learning & Evaluation | Implementation of 5 ML algorithms, 5-fold stratified and grouped cross-validation, hyperparameter tuning, metrics evaluation, `03_model_training.ipynb`, `src/train.py`, `results/`. |
+| **Abrham Gebremedhin**<br>*(Member 3)* | Integration, QA & Documentation | Project architecture, automated test suite (`tests/`), risk register, technical proposal, root `README.md`, `CONTRIBUTING.md`, `src/uci_loader.py`, peer review coordination. |
 
 For detailed instructions on Git commands, branch conventions, and Pull Requests, see [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`docs/team_workflow.md`](docs/team_workflow.md).
 
