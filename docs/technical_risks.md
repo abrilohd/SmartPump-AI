@@ -2,7 +2,7 @@
 
 **Project:** SmartPump AI — Intelligent Hydraulic Pump Condition Monitoring
 **Assignment:** Classwork 3.12 (Group Machine Learning Project)
-**Maintained by:** Israel Abera (Member 3 — Integration, Documentation and Testing Lead)
+**Maintained by:** Abrham Gebremedhin (Member 3 — Integration, Documentation and Testing Lead)
 **Version:** 2.0 (Post-Model Evaluation & Final Integration)
 **Date:** November 2026  
 **Status:** Verified & Closed for Final Submission

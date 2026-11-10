@@ -11,8 +11,8 @@
 | Full Name | Student ID | GitHub Username | Assigned Role |
 |---|---|---|---|
 | **Biruk Ayitenew** | WOUR/0483/16 | [@Biruk1997](https://github.com/Biruk1997) | **Member 1:** Data Engineering & Exploration |
-| **Abrham Gebremedhin** | WOUR/0082/16 | [@abrilohd](https://github.com/abrilohd) | **Member 2:** Machine Learning & Evaluation |
-| **Israel Abera** | WOUR/4167/16 | [@Isru96](https://github.com/Isru96) | **Member 3:** Integration, Documentation & Testing Lead |
+| **Israel Abera** | WOUR/4167/16 | [@Isru96](https://github.com/Isru96) | **Member 2:** Machine Learning & Evaluation |
+| **Abrham Gebremedhin** | WOUR/0082/16 | [@abrilohd](https://github.com/abrilohd) | **Member 3:** Integration, Documentation & Testing Lead |
 
 ---
 
@@ -130,13 +130,13 @@ Evaluated on the 218 held-out test cycles:
 
 | Phase | Milestone / Deliverable | Responsible Member | Deliverable Location |
 |:---:|:---|:---:|:---|
-| **Phase 1** | Foundation, dataset documentation & proposal | Israel Abera (Member 3) | `README.md`, `docs/project_proposal.md`, `data/README.md` |
+| **Phase 1** | Foundation, dataset documentation & proposal | Abrham Gebremedhin (Member 3) | `README.md`, `docs/project_proposal.md`, `data/README.md` |
 | **Phase 2** | Exploratory Data Analysis & distribution study | Biruk Ayitenew (Member 1) | `notebooks/01_data_exploration.ipynb`, `docs/data_exploration_report.md` |
 | **Phase 3** | Preprocessing, feature engineering & scaling | Biruk Ayitenew (Member 1) | `src/preprocessing.py`, `src/feature_engineering.py`, `notebooks/02_*.ipynb` |
-| **Phase 4** | 5 ML algorithms, CV, tuning & evaluation | Abrham Gebremedhin (Member 2) | `src/train.py`, `notebooks/03_model_training.ipynb`, `docs/model_training_report.md` |
-| **Phase 5** | Model verification & technical risk analysis | Israel Abera (Member 3) | `docs/technical_risks.md`, `results/evaluation/*.csv` |
-| **Phase 6** | UCI programmatic loader, test suite & QA | Israel Abera (Member 3) | `src/uci_loader.py`, `tests/test_*.py` |
-| **Phase 7** | Final integration, peer review & submission | Israel Abera (Member 3) | `CONTRIBUTING.md`, `docs/team_workflow.md`, `.github/` |
+| **Phase 4** | 5 ML algorithms, CV, tuning & evaluation | Israel Abera (Member 2) | `src/train.py`, `notebooks/03_model_training.ipynb`, `docs/model_training_report.md` |
+| **Phase 5** | Model verification & technical risk analysis | Abrham Gebremedhin (Member 3) | `docs/technical_risks.md`, `results/evaluation/*.csv` |
+| **Phase 6** | UCI programmatic loader, test suite & QA | Abrham Gebremedhin (Member 3) | `src/uci_loader.py`, `tests/test_*.py` |
+| **Phase 7** | Final integration, peer review & submission | Abrham Gebremedhin (Member 3) | `CONTRIBUTING.md`, `docs/team_workflow.md`, `.github/` |
 
 ---
 

@@ -9,8 +9,8 @@
 | Full Name | Student ID | GitHub Username | Assigned Role |
 |---|---|---|---|
 | **Biruk Ayitenew** | WOUR/0483/16 | [@Biruk1997](https://github.com/Biruk1997) | **Member 1:** Data Engineering & Exploration |
-| **Abrham Gebremedhin** | WOUR/0082/16 | [@abrilohd](https://github.com/abrilohd) | **Member 2:** Machine Learning & Evaluation |
-| **Israel Abera** | WOUR/4167/16 | [@Isru96](https://github.com/Isru96) | **Member 3:** Integration, Documentation & Testing Lead |
+| **Israel Abera** | WOUR/4167/16 | [@Isru96](https://github.com/Isru96) | **Member 2:** Machine Learning & Evaluation |
+| **Abrham Gebremedhin** | WOUR/0082/16 | [@abrilohd](https://github.com/abrilohd) | **Member 3:** Integration, Documentation & Testing Lead |
 
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org/)
 [![License: CC BY 4.0](https://img.shields.io/badge/Dataset%20License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
@@ -324,8 +324,8 @@ SmartPump AI is developed by a team of three students. Responsibilities are part
 | Member | Domain | Key Files & Responsibilities |
 |---|---|---|
 | **Biruk Ayitenew**<br>*(Member 1)* | Data Engineering & Exploration | Ingestion of 17 raw sensor channels, multi-rate alignment, stable filtering, cycle-level feature extraction (255 features), `01_data_exploration.ipynb`, `02_preprocessing.ipynb`, `src/preprocessing.py`, `src/feature_engineering.py`. |
-| **Abrham Gebremedhin**<br>*(Member 2)* | Machine Learning & Evaluation | Implementation of 5 ML algorithms, 5-fold stratified and grouped cross-validation, hyperparameter tuning, metrics evaluation, `03_model_training.ipynb`, `src/train.py`, `results/`. |
-| **Israel Abera**<br>*(Member 3)* | Integration, QA & Documentation | Project architecture, automated test suite (`tests/`), risk register, technical proposal, root `README.md`, `CONTRIBUTING.md`, `src/uci_loader.py`, peer review coordination. |
+| **Israel Abera**<br>*(Member 2)* | Machine Learning & Evaluation | Implementation of 5 ML algorithms, 5-fold stratified and grouped cross-validation, hyperparameter tuning, metrics evaluation, `03_model_training.ipynb`, `src/train.py`, `results/`. |
+| **Abrham Gebremedhin**<br>*(Member 3)* | Integration, QA & Documentation | Project architecture, automated test suite (`tests/`), risk register, technical proposal, root `README.md`, `CONTRIBUTING.md`, `src/uci_loader.py`, peer review coordination. |
 
 For detailed instructions on Git commands, branch conventions, and Pull Requests, see [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`docs/team_workflow.md`](docs/team_workflow.md).
 

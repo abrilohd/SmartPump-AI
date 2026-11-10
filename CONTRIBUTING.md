@@ -11,8 +11,8 @@ To maintain clean code quality, avoid merge conflicts, and ensure that our teach
 | Student Name | Student ID | GitHub | Role | Primary Technical Domain | Key Files |
 |:---|:---|:---|:---|:---|:---|
 | **Biruk Ayitenew** | WOUR/0483/16 | [@Biruk1997](https://github.com/Biruk1997) | **Member 1** | Data Engineering & Exploration | `src/preprocessing.py`, `src/feature_engineering.py`, `notebooks/01_*.ipynb`, `notebooks/02_*.ipynb` |
-| **Abrham Gebremedhin** | WOUR/0082/16 | [@abrilohd](https://github.com/abrilohd) | **Member 2** | Machine Learning & Evaluation | `src/train.py`, `notebooks/03_*.ipynb`, `results/` |
-| **Israel Abera** | WOUR/4167/16 | [@Isru96](https://github.com/Isru96) | **Member 3** | Integration, Documentation & QA | `README.md`, `docs/`, `tests/`, `src/uci_loader.py`, `.github/` |
+| **Israel Abera** | WOUR/4167/16 | [@Isru96](https://github.com/Isru96) | **Member 2** | Machine Learning & Evaluation | `src/train.py`, `notebooks/03_*.ipynb`, `results/` |
+| **Abrham Gebremedhin** | WOUR/0082/16 | [@abrilohd](https://github.com/abrilohd) | **Member 3** | Integration, Documentation & QA | `README.md`, `docs/`, `tests/`, `src/uci_loader.py`, `.github/` |
 
 ---
 
