@@ -84,7 +84,7 @@ def fetch_hydraulic_dataset(dataset_id: int = UCI_DATASET_ID) -> Dict[str, Any]:
 
     try:
         repo_data = fetch_ucirepo(id=dataset_id)
-        
+
         # Successfully retrieved programmatic record
         features = getattr(repo_data.data, "features", None)
         targets = getattr(repo_data.data, "targets", None)

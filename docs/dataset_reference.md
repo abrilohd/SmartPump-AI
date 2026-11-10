@@ -1,9 +1,9 @@
 # UCI Dataset Reference: Condition Monitoring of Hydraulic Systems
 
-**Dataset:** Condition Monitoring of Hydraulic Systems  
-**UCI Machine Learning Repository ID:** [447](https://archive.ics.uci.edu/dataset/447/condition+monitoring+of+hydraulic+systems)  
-**DOI:** [10.24432/C5CW21](https://doi.org/10.24432/C5CW21)  
-**Origin:** ZeMA gGmbH, Saarbrücken, Germany (Helwig et al., 2015)  
+**Dataset:** Condition Monitoring of Hydraulic Systems
+**UCI Machine Learning Repository ID:** [447](https://archive.ics.uci.edu/dataset/447/condition+monitoring+of+hydraulic+systems)
+**DOI:** [10.24432/C5CW21](https://doi.org/10.24432/C5CW21)
+**Origin:** ZeMA gGmbH, Saarbrücken, Germany (Helwig et al., 2015)
 **License:** Creative Commons Attribution 4.0 International (CC BY 4.0)
 
 ---
