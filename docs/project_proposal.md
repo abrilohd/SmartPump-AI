@@ -1,217 +1,146 @@
-# SmartPump AI  - Technical Project Proposal
+# SmartPump AI — Technical Project Proposal
 
-**Project Title:** Intelligent Hydraulic Pump Condition Monitoring and Fault Classification Using Machine Learning  
-**Version:** 1.1  
-**Date:** November 2026  
-**Status:** Step 2 Complete — EDA Verified, Ready for Feature Engineering
+**Project Title:** Intelligent Hydraulic Pump Condition Monitoring and Internal Leakage Classification Using Machine Learning
+**Assignment:** Classwork 3.12 — Group Machine Learning Project
+**Version:** 2.0 (Final Academic Submission)
+**Date:** November 2026
+**Status:** Complete — Fully Implemented, Evaluated, and Verified for Academic Submission
+
+## Team Members
+
+| Full Name | Student ID | GitHub Username | Assigned Role |
+|---|---|---|---|
+| **Biruk Ayitenew** | WOUR/0483/16 | [@Biruk1997](https://github.com/Biruk1997) | **Member 1:** Data Engineering & Exploration |
+| **Abrham Gebremedhin** | WOUR/0082/16 | [@abrilohd](https://github.com/abrilohd) | **Member 2:** Machine Learning & Evaluation |
+| **Israel Abera** | WOUR/4167/16 | [@Isru96](https://github.com/Isru96) | **Member 3:** Integration, Documentation & Testing Lead |
 
 ---
 
 ## 1. Executive Summary
 
-SmartPump AI applies supervised machine learning to automatically classify the internal pump leakage condition of an industrial hydraulic system into three severity classes  - **Normal**, **Warning**, and **Fault**  - using real sensor time-series data from the UCI Condition Monitoring of Hydraulic Systems dataset.
+**SmartPump AI** is a collaborative machine learning study developed for **Classwork 3.12** that automatically diagnoses the internal pump leakage condition of an industrial hydraulic system. The system classifies pump operation into three distinct degradation states — **Normal** (no leakage), **Warning** (weak leakage), and **Fault** (severe leakage) — by analyzing multi-rate sensor time series from the benchmark **UCI Condition Monitoring of Hydraulic Systems** dataset.
 
-The dataset was collected by Helwig, Pignanelli, and Schütze at ZeMA gGmbH, Saarbrücken, Germany, and published on the UCI Machine Learning Repository under a CC BY 4.0 license. It contains 2,205 experimental 60-second cycles with measurements from 17 sensor channels at sampling rates between 1 Hz and 100 Hz.
-
-The project is designed for a three-person engineering team and emphasizes correctness, reproducibility, and leakage-free evaluation.
+Collected by Helwig, Pignanelli, and Schütze at ZeMA gGmbH (Saarbrücken, Germany), the dataset provides 2,205 sixty-second operating cycles across 17 sensor channels (sampling frequencies between 1 Hz and 100 Hz). The project emphasizes engineering rigor, cycle-level feature extraction without data leakage, multi-algorithm benchmarking across five required classification techniques, and group-aware validation across separate experimental runs.
 
 ---
 
-## 2. Problem Statement
+## 2. Problem Statement & Motivation
 
-Internal pump leakage is a progressive degradation mode in hydraulic systems that reduces system efficiency and, if undetected, leads to catastrophic failure. Early and automatic detection of this condition enables:
+Hydraulic pumps are prime movers in industrial automation, material handling, injection molding, and aerospace systems. Internal pump leakage is a progressive mechanical failure mode caused by wear on internal pistons, swashplates, and seals. This leakage allows pressurized hydraulic fluid to slip from high-pressure delivery chambers back into low-pressure return lines or the reservoir.
 
-- Predictive maintenance instead of fixed-schedule or reactive repair.
-- Reduced unplanned downtime.
-- Improved safety in industrial operations.
+Unchecked internal leakage causes:
+1. **Volumetric Efficiency Loss:** Severe drops in actuator speed and system pressure.
+2. **Thermal Runaway:** Mechanical energy converted directly into fluid heat, degrading oil viscosity.
+3. **Catastrophic Seizure:** Metal-on-metal friction resulting in pump destruction and unmonitored plant downtime.
 
-The technical challenge is building a classification pipeline that:
-1. Correctly identifies which target column in the dataset corresponds to pump leakage.
-2. Handles the multi-rate, high-volume time-series structure of the sensor data.
-3. Avoids temporal data leakage between training and testing cycles.
-4. Reports evaluation metrics that are meaningful for an imbalanced three-class problem.
+Traditional maintenance approaches rely on reactive repair or rigid schedule-based overhaul. **SmartPump AI** develops a non-intrusive, data-driven condition monitoring pipeline capable of detecting weak internal leakage (**Warning**) before catastrophic breakdown occurs (**Fault**).
 
 ---
 
-## 3. Dataset Description
+## 3. Dataset Selection & Specifications
 
-### 3.1 Source
+### 3.1 Source and Provenance
+- **Repository:** UCI Machine Learning Repository (Dataset ID: 447)
+- **DOI:** [10.24432/C5CW21](https://doi.org/10.24432/C5CW21)
+- **Official URL:** `https://archive.ics.uci.edu/dataset/447/condition+monitoring+of+hydraulic+systems`
+- **Authors:** Nikolai Helwig, Eliseo Pignanelli, Andreas Schütze (2015)
+- **License:** Creative Commons Attribution 4.0 International (CC BY 4.0)
 
-| Property | Detail |
-|----------|--------|
-| Repository | UCI Machine Learning Repository |
-| Dataset ID | 447 |
-| DOI | https://doi.org/10.24432/C5CW21 |
-| URL | https://archive.ics.uci.edu/dataset/447/condition+monitoring+of+hydraulic+systems |
-| Authors | Helwig, N., Pignanelli, E., Schütze, A. |
-| Year | 2015 |
-| License | CC BY 4.0 |
+### 3.2 Dataset Architecture
+The raw dataset contains **18 tab-delimited text files** representing 2,205 sixty-second operational cycles:
+- **17 Sensor Matrices:** Raw sensor readings where rows represent cycles and columns represent timestamps within each 60-second cycle.
+- **1 Target Annotation File:** `profile.txt` (2,205 rows × 5 columns).
 
-### 3.2 Structure
+### 3.3 Sensor Channels by Acquisition Frequency
+1. **100 Hz Channels (6,000 values/cycle):** Hydraulic pressures `PS1` through `PS6` (bar), Electrical motor power `EPS1` (W).
+2. **10 Hz Channels (600 values/cycle):** Volume flow rates `FS1` and `FS2` (l/min).
+3. **1 Hz Channels (60 values/cycle):** Oil temperatures `TS1` through `TS4` (°C), Mechanical vibration `VS1` (mm/s), Virtual cooling efficiency `CE` (%), Virtual cooling power `CP` (kW), Efficiency factor `SE` (%).
+- **Total raw measurements per cycle:** $(7 \times 6,000) + (2 \times 600) + (8 \times 60) = 43,680$ data points.
 
-The dataset contains **17 raw sensor text files** plus **one target file** (`profile.txt`), all in tab-delimited format.
+### 3.4 Target Label Formulation
+Ground truth component wear states are recorded in `profile.txt`:
+- Column 0: Hydraulic cooler condition
+- Column 1: Directional control valve condition
+- **Column 2: Internal pump leakage (Primary Target)**
+- Column 3: Hydraulic accumulator condition
+- Column 4: System stability flag (`0` = stable steady state; `1` = transient warm-up state)
 
-- **Rows:** 2,205 (one per experimental cycle)
-- **Each cycle:** 60 seconds of continuous hydraulic operation under constant load
-- **Columns per file:** Determined by the sensor's sampling rate × 60 seconds
-
-### 3.3 Sensor Channels
-
-| File(s) | Quantity | Unit | Rate | Cols/Cycle |
-|---------|----------|------|------|------------|
-| PS1–PS6 | Pressure | bar | 100 Hz | 6,000 |
-| EPS1 | Motor power | W | 100 Hz | 6,000 |
-| FS1, FS2 | Volume flow | l/min | 10 Hz | 600 |
-| TS1–TS4 | Temperature | °C | 1 Hz | 60 |
-| VS1 | Vibration | mm/s | 1 Hz | 60 |
-| CE | Cooling efficiency (virtual) | % | 1 Hz | 60 |
-| CP | Cooling power (virtual) | kW | 1 Hz | 60 |
-| SE | Efficiency factor (virtual) | % | 1 Hz | 60 |
-
-### 3.4 Target Labels  - `profile.txt`
-
-`profile.txt` has 2,205 rows and 5 columns. **Column indices are 0-based in code.**
-
-| Column | Component | Values |
-|--------|-----------|--------|
-| 0 | Cooler condition (%) | 3, 20, 100 |
-| 1 | Valve condition (%) | 73, 80, 90, 100 |
-| **2** | **Internal pump leakage** ← **our target** | **0, 1, 2** |
-| 3 | Hydraulic accumulator (bar) | 90, 100, 115, 130 |
-| 4 | Stable flag | 0 (stable), 1 (not fully stable) |
-
-### 3.5 Pump Leakage Class Definitions
-
-| Raw Value | Condition | SmartPump Label |
-|-----------|-----------|-----------------|
-| `0` | No internal leakage | **Normal** |
-| `1` | Weak internal leakage (reduced efficiency) | **Warning** |
-| `2` | Severe internal leakage | **Fault** |
-
-> **Note:** The other four columns describe the cooler, valve, accumulator, and system stability  - not pump leakage. They must not be conflated with our classification target.
+The three operational classes are mapped as:
+- **`0` → Normal:** No internal pump leakage (full volumetric efficiency).
+- **`1` → Warning:** Weak internal pump leakage (incipient wear and efficiency loss).
+- **`2` → Fault:** Severe internal pump leakage (critical volumetric slippage).
 
 ---
 
-## 4. Classification Task
+## 4. Methodology & Scope
 
-### 4.1 Task Type
+### 4.1 Unit of Observation & Cycle-Level Feature Extraction
+Treating individual time steps as independent observations would cause catastrophic data leakage and inflate performance artificially. In SmartPump AI:
+- Each 60-second operating cycle is treated as a **single, discrete observation**.
+- 15 statistical, dispersion, distribution shape, and temporal features are extracted per sensor channel:
+  - Central tendency: Mean, Median
+  - Dispersion: Standard Deviation, IQR, Min, Max
+  - Distribution: Skewness, Kurtosis, 25th Percentile, 75th Percentile
+  - Energy: Energy, Power, Absolute Energy
+  - Dynamics: Linear Slope, Net Delta ($\text{end} - \text{start}$)
+- Yields a structured matrix of **255 features per cycle** across all 17 sensors.
 
-Supervised, multi-class classification (3 classes) over cycle-level feature vectors derived from raw sensor time-series.
-
-### 4.2 Input Feature Space
-
-The raw data is **not** directly usable as a feature matrix because:
-- Different sensors have different sampling rates (1 Hz to 100 Hz).
-- Each cycle produces tens of thousands of data points, not a fixed-width feature vector.
-- Treating raw samples as independent observations would cause severe data leakage.
-
-**Solution:** Per-cycle statistical feature extraction  - reduce each 60-second sensor time series to a small set of summary statistics:
-- Mean, standard deviation, minimum, maximum, median
-- Optionally: RMS, kurtosis, skewness, interquartile range
-
-This yields a **single feature row per cycle**, ensuring each of the 2,205 cycles is an independent observation.
-
-### 4.3 Output
-
-A three-class label: `0` (Normal), `1` (Warning), `2` (Fault).
+### 4.2 Data Partitioning & Leakage Protections
+- **Primary Population:** 1,449 stable operating cycles (`stable_flag == 0`), which are naturally balanced (489 Normal, 480 Warning, 480 Fault).
+- **Cycle-Level Stratified Split:** 70% Training (1,014 cycles), 15% Validation (217 cycles), and 15% Held-Out Testing (218 cycles).
+- **Transformation Hygiene:** `VarianceThreshold(0.0)` and `StandardScaler` are wrapped within scikit-learn `Pipeline` objects and fitted strictly on `X_train`.
 
 ---
 
-## 5. Candidate Algorithms
+## 5. Required Algorithms & Experimental Matrix
 
-| Algorithm | Library | Key Hyperparameter(s) |
-|-----------|---------|----------------------|
-| Decision Tree | `sklearn.tree.DecisionTreeClassifier` | `max_depth`, `min_samples_leaf` |
-| Random Forest | `sklearn.ensemble.RandomForestClassifier` | `n_estimators`, `max_depth`, `class_weight` |
-| Support Vector Machine | `sklearn.svm.SVC` | `C`, `kernel`, `gamma`, `class_weight` |
-| Gaussian Naïve Bayes | `sklearn.naive_bayes.GaussianNB` | `var_smoothing` |
-| AdaBoost | `sklearn.ensemble.AdaBoostClassifier` | `n_estimators`, `learning_rate` |
+In full alignment with Classwork 3.12, five classical supervised algorithms were implemented, tuned, and compared:
 
-All models use `random_state=42` for reproducibility.
-
----
-
-## 6. Validation Strategy
-
-### 6.1 Train/Test Split
-
-- **Split unit:** Cycle (row in `profile.txt`), never individual sensor samples.
-- **Ratio:** 80% train / 20% test using `StratifiedShuffleSplit` to preserve class proportions.
-- **Stratification:** On the pump leakage label (column 2 of `profile.txt`).
-- **No cross-contamination:** A cycle used in test is never represented in train.
-
-### 6.2 Stable Flag Handling
-
-Cycles where `profile.txt` column 4 equals `1` indicate the system had not yet reached steady state. Strategy:
-- **Primary evaluation:** Filter these cycles out (use only `stable_flag == 0`).
-- **Sensitivity analysis:** Repeat evaluation with all cycles included and report the difference.
-
-### 6.3 Cross-Validation
-
-For hyperparameter search, use `StratifiedKFold(n_splits=5)` applied to the training set only.
+1. **Dummy Classifier (Baseline):** Stratified random guessing baseline.
+2. **Decision Tree:** Non-parametric recursive splitting (`max_depth=5`, `min_samples_split=5`).
+3. **Random Forest:** Bagged ensemble of 100 decorrelated decision trees (`n_estimators=100`, `max_depth=10`).
+4. **Support Vector Machine (SVM):** Radial Basis Function kernel with balanced class weights (`C=10.0`, `gamma='scale'`).
+5. **Gaussian Naïve Bayes:** Probabilistic classifier modeling class-conditional Gaussian distributions.
+6. **AdaBoost:** Sequential adaptive boosting of decision stumps (`n_estimators=100`, `learning_rate=0.5`).
 
 ---
 
-## 7. Evaluation Metrics
+## 6. Evaluation Framework
 
-| Metric | Purpose |
-|--------|---------|
-| **Fault-class Recall** | Critical: how many real faults are caught |
-| **Fault-class Precision** | Critical: how many fault alerts are real |
-| **Warning-class F1** | Tracks performance on the hardest minority class |
-| **Macro F1-score** | Overall quality across all three classes equally |
-| **Confusion Matrix** | Full error analysis across all class pairs |
-| **Classification Report** | Per-class precision, recall, F1 |
-
-**Overall accuracy is reported but is NOT the primary metric.**
+To prioritize industrial safety, model selection is driven by:
+- **Fault Recall ($\text{Recall}_2$):** Proportion of severe leakage cycles correctly flagged ($\frac{\text{TP}_2}{\text{TP}_2 + \text{FN}_2}$).
+- **Fault Precision ($\text{Precision}_2$):** Proportion of declared faults that are genuine.
+- **Macro F1-Score:** Unweighted arithmetic mean of F1-scores across all three classes.
+- **Multi-Class Confusion Matrix & Classification Report:** Comprehensive analysis of misclassification patterns.
+- **Group-Aware Validation:** Stratified grouped 5-fold CV across 36 contiguous experimental blocks to detect thermal and ambient drift.
+- **Operational Sensitivity:** Zero-retraining evaluation on the 756 unstable cycles.
 
 ---
 
-## 8. Technical Risks
+## 7. Summary of Results & Model Selection
 
-| Risk | Severity | Mitigation |
-|------|----------|-----------|
-| **Data leakage**  - mixing same-cycle samples in train/test | 🔴 High | Feature extraction aggregates whole cycles; split at cycle level |
-| **Label confusion**  - using wrong `profile.txt` column | 🔴 High | Explicitly load column 2 (0-indexed); verify unique values are {0, 1, 2} |
-| **Class imbalance**  - Warning class underrepresented | 🟡 Medium | Report macro F1; use `class_weight='balanced'` for SVM/RF; evaluate per-class |
-| **Stable flag**  - transient cycles may distort features | 🟡 Medium | Filter `stable_flag==1` for primary run; include in sensitivity analysis |
-| **Multi-rate features**  - naïve concatenation of different-rate sensors | 🟡 Medium | Extract statistics per sensor independently; align at cycle level |
-| **Overfitting**  - deep Decision Trees or complex SVMs | 🟢 Low | Cross-validate; tune `max_depth` and regularization |
+Evaluated on the 218 held-out test cycles:
+- **Champion Model:** **Random Forest** achieved **1.0000 Macro F1** and **1.0000 Fault Recall**, followed closely by SVM (0.9908 Macro F1) and Decision Tree (0.9862 Macro F1).
+- **Group-Aware Generalization:** Across 36 experimental blocks, Random Forest achieved **0.9168 ± 0.0769 Macro F1**, reflecting realistic ambient laboratory drift.
+- **Top Physical Predictors:** Permutation and Gini importance identified `SE` (Efficiency Factor), `FS1` (Volume Flow), `EPS1` (Motor Power), and `PS3` (Return Line Pressure) as the primary indicators of internal pump leakage.
 
 ---
 
-## 9. Project Deliverables
+## 8. Academic Deliverables & Work Partition
 
-| Phase | Deliverable | Assigned To |
-|-------|-------------|-------------|
-| Phase 1 | Project foundation  - README, proposal, data docs | Member C |
-| Phase 2 | Dataset download, EDA notebook, label verification | Member A |
-| Phase 3 | Feature extraction pipeline  - `feature_engineering.py` | Member A |
-| Phase 4 | Preprocessing pipeline  - `preprocessing.py` | Member A |
-| Phase 5 | Model training  - `train.py`, `03_model_training.ipynb` | Member B |
-| Phase 6 | Evaluation report  - confusion matrices, feature importance | Member B |
-| Phase 7 | Final integration, reproducibility audit, documentation | Member C |
-
----
-
-## 10. Reproducibility Requirements
-
-- Python version: 3.9+
-- All random states: `random_state=42`
-- All dependencies pinned in `requirements.txt`
-- Raw data files stored in `data/raw/` and excluded from Git via `.gitignore`
-- Processed features stored in `data/processed/` and excluded from Git
-- Notebooks committed with **cleared outputs**
-- One `README.md` documents the full reproduction procedure
+| Phase | Milestone / Deliverable | Responsible Member | Deliverable Location |
+|:---:|:---|:---:|:---|
+| **Phase 1** | Foundation, dataset documentation & proposal | Israel Abera (Member 3) | `README.md`, `docs/project_proposal.md`, `data/README.md` |
+| **Phase 2** | Exploratory Data Analysis & distribution study | Biruk Ayitenew (Member 1) | `notebooks/01_data_exploration.ipynb`, `docs/data_exploration_report.md` |
+| **Phase 3** | Preprocessing, feature engineering & scaling | Biruk Ayitenew (Member 1) | `src/preprocessing.py`, `src/feature_engineering.py`, `notebooks/02_*.ipynb` |
+| **Phase 4** | 5 ML algorithms, CV, tuning & evaluation | Abrham Gebremedhin (Member 2) | `src/train.py`, `notebooks/03_model_training.ipynb`, `docs/model_training_report.md` |
+| **Phase 5** | Model verification & technical risk analysis | Israel Abera (Member 3) | `docs/technical_risks.md`, `results/evaluation/*.csv` |
+| **Phase 6** | UCI programmatic loader, test suite & QA | Israel Abera (Member 3) | `src/uci_loader.py`, `tests/test_*.py` |
+| **Phase 7** | Final integration, peer review & submission | Israel Abera (Member 3) | `CONTRIBUTING.md`, `docs/team_workflow.md`, `.github/` |
 
 ---
 
-## 11. References
+## 9. References
 
 1. Helwig, N., Pignanelli, E., & Schütze, A. (2015). *Condition monitoring of hydraulic systems* [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5CW21
-
-2. Helwig, N., Pignanelli, E., & Schütze, A. (2015). Condition monitoring of a complex hydraulic system using multivariate statistics. *2015 IEEE International Instrumentation and Measurement Technology Conference (I2MTC)*, Pisa, Italy, pp. 210–215. doi:10.1109/I2MTC.2015.7151267
-
----
-
-*This proposal is a living document. Update it as technical decisions are made during implementation.*
+2. Helwig, N., Pignanelli, E., & Schütze, A. (2015). Condition monitoring of a complex hydraulic system using multivariate statistics. *2015 IEEE International Instrumentation and Measurement Technology Conference (I2MTC)*, Pisa, Italy, pp. 210–215. https://doi.org/10.1109/I2MTC.2015.7151267
