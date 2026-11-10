@@ -8,11 +8,11 @@ To maintain clean code quality, avoid merge conflicts, and ensure that our teach
 
 ## Team Responsibilities Overview
 
-| Member | Primary Focus | Key Files |
-|:---|:---|:---|
-| **Member 1** | Data exploration, preprocessing & feature extraction | `src/preprocessing.py`, `src/feature_engineering.py`, `notebooks/01_*.ipynb`, `notebooks/02_*.ipynb` |
-| **Member 2** | ML algorithms, training, tuning & evaluation | `src/train.py`, `notebooks/03_*.ipynb`, `results/` |
-| **Member 3** | Integration, documentation, testing & submission | `README.md`, `docs/`, `tests/`, `.github/` |
+| Student Name | Student ID | GitHub | Role | Primary Technical Domain | Key Files |
+|:---|:---|:---|:---|:---|:---|
+| **Biruk Ayitenew** | WOUR/0483/16 | [@Biruk1997](https://github.com/Biruk1997) | **Member 1** | Data Engineering & Exploration | `src/preprocessing.py`, `src/feature_engineering.py`, `notebooks/01_*.ipynb`, `notebooks/02_*.ipynb` |
+| **Abrham Gebremedhin** | WOUR/0082/16 | [@abrilohd](https://github.com/abrilohd) | **Member 2** | Machine Learning & Evaluation | `src/train.py`, `notebooks/03_*.ipynb`, `results/` |
+| **Israel Abera** | WOUR/4167/16 | [@Isru96](https://github.com/Isru96) | **Member 3** | Integration, Documentation & QA | `README.md`, `docs/`, `tests/`, `src/uci_loader.py`, `.github/` |
 
 ---
 
