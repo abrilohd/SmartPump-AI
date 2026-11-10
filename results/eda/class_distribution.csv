@@ -1,0 +1,4 @@
+class_code,class_name,count_all,count_stable,count_unstable,pct_all,pct_stable,pct_unstable
+0,Normal,1221,489,732,55.4,33.7,96.8
+1,Warning,492,480,12,22.3,33.1,1.6
+2,Fault,492,480,12,22.3,33.1,1.6

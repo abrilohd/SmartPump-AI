@@ -1,10 +1,14 @@
 # ============================================================
-# SmartPump AI — .gitignore
+# SmartPump AI  - .gitignore
 # ============================================================
 
 # --- Dataset files (download separately, never commit) ------
-data/raw/
-data/processed/
+data/raw/*
+!data/raw/.gitkeep
+!data/raw/README.md
+
+data/processed/*
+!data/processed/.gitkeep
 
 # --- Python ---
 __pycache__/
@@ -33,10 +37,12 @@ ENV/
 models/*.pkl
 models/*.joblib
 models/*.model
+!models/.gitkeep
 
 # --- Results (regenerate from code; keep plots in results/ if small) ---
 results/*.csv
 results/*.json
+!results/.gitkeep
 
 # --- IDE and OS ---
 .idea/
@@ -45,6 +51,11 @@ results/*.json
 *.swo
 .DS_Store
 Thumbs.db
+
+# --- Testing and scratch ---
+.pytest_cache/
+scratch/
+.dist/
 
 # --- Logs ---
 *.log
