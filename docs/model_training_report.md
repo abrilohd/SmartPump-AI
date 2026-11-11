@@ -150,6 +150,29 @@ Using `GridSearchCV` on the training partition with 5-fold Stratified CV:
 4. **Computational Efficiency:** Fitting time of 0.29s vs. 4.81s for AdaBoost (16.6× faster training), and instant sub-millisecond inference per cycle.
 5. **Ensemble Non-Parametric Robustness:** Bagging with randomized feature subsampling effectively handles multi-sensor collinearity without requiring fragile matrix inversion or restrictive independence assumptions (which caused Gaussian Naïve Bayes to collapse to 42.8% accuracy).
 
+### 6.1 Critical Review: How Realistic Are the Perfect Scores?
+
+The validation and test results in Tables 3 and 4 show perfect scores (1.0) for Random Forest and AdaBoost. These results should be read with care.
+
+**Why the scores may be optimistic:** The train/validation/test split in `split_cycle_data()` is random at the cycle level. Cycles from the same experimental block share very similar operating conditions, so the test set contains cycles that look almost identical to cycles the model has already seen during training.
+
+**A more realistic estimate:** The group-aware cross-validation in Table 2 holds out complete experimental blocks, which is closer to how the model would face a new, unseen pump run. Under this stricter test, every model loses performance:
+
+| Model | Cycle-Level CV Macro F1 | Group CV Macro F1 | Drop |
+|:---|:---:|:---:|:---:|
+| AdaBoost | 0.9960 | 0.9362 | -6.0 points |
+| Random Forest | 0.9950 | 0.9168 | -7.8 points |
+| Decision Tree | 0.9861 | 0.9135 | -7.3 points |
+| SVM (RBF) | 0.9792 | 0.8082 | -17.1 points |
+
+We therefore consider a Macro F1 of roughly **0.92–0.94** a more honest expectation for new pump runs than the 1.0 reported on the random test split.
+
+**Effect on model selection:** On group CV, AdaBoost scored higher than Random Forest (0.936 vs 0.917) and had lower variance across blocks (±0.060 vs ±0.077). Random Forest remains a reasonable choice because it trains about 16× faster and the difference falls within one standard deviation, but AdaBoost should be re-evaluated as a candidate in Step 5.
+
+**Why Naïve Bayes failed:** Gaussian Naïve Bayes assumes every feature is independent. Our 255 features come from 17 sensors that are strongly correlated with each other (see the EDA correlation heatmap), and many features are summary statistics of the same signal (mean, median, quartiles). This breaks the independence assumption, which explains its low accuracy (0.43) compared with the tree-based models.
+
+**Recommendation:** For future work, the final test split should also be grouped by experimental block (for example, with `GroupShuffleSplit`), so the reported test score reflects performance on truly unseen operating conditions.
+
 ---
 
 ## 7. Final Held-Out Test Set Evaluation (218 Cycles)
